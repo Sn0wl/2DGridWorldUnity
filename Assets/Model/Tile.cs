@@ -8,12 +8,44 @@ public class Tile {
 
     TileType type = TileType.Empty;
 
+    public TileType Type
+    {
+        get
+        {
+            return type;
+        }
+
+        set
+        {
+            type = value;
+            // Call the callback and let things know we´ve changed.
+        }
+    }
+
+    public int X
+    {
+        get
+        {
+            return x;
+        }
+    }
+
+    public int Y
+    {
+        get
+        {
+            return y;
+        }
+    }
+
     LooseObject looseObject;
     InstalledObject installedObject;
 
     World world;
     int x;
     int y;
+
+    
 
     public Tile( World world, int x, int y)
     {

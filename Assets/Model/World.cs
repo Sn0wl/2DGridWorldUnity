@@ -5,11 +5,30 @@ using UnityEngine;
 public class World {
 
     Tile[,] tiles;
+
     int width;
+
+    public int Width
+    {
+        get
+        {
+            return width;
+        }
+    }
+
     int height;
+
+    public int Height
+    {
+        get
+        {
+            return height;
+        }
+    }
 
     public World(int width = 100, int height = 100)
     {
+        
         this.width = width;
         this.height = height;
 
@@ -36,4 +55,24 @@ public class World {
         }
         return tiles[x, y];
     }
+
+    public void RandomizeTiles()
+    {
+        Debug.Log("rondomizedTiles");
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if(Random.Range(0,2) == 0)
+                {
+                    tiles[x, y].Type = Tile.TileType.Empty;
+                }
+                else
+                {
+                    tiles[x, y].Type = Tile.TileType.Floor;
+                }
+            }
+        }
+    }
+
 }
