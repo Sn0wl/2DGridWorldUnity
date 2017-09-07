@@ -84,6 +84,7 @@
     <Compile Include="Assets\Model\LooseObject.cs" />
     <Compile Include="Assets\Model\Tile.cs" />
     <Compile Include="Assets\Model\World.cs" />
+    <Compile Include="Assets\Utilities\SimplePool.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
