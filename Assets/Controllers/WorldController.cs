@@ -5,12 +5,20 @@ using System;
 
 public class WorldController : MonoBehaviour {
 
+    public static WorldController Instance { get; protected set; }
+
     public Sprite floorSprite;
 
-    World world;
+    public World world { get; protected set; }
 
 	// Use this for initialization
 	void Start () {
+        if(Instance != null)
+        {
+            Debug.LogError("There should never be two world controllers.");
+        }
+        Instance = this;
+
         //Create Empty wolrd with empty tiles
         world = new World();
 
