@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Events;
+using UnityEditor.IMGUI;
+using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour {
 
@@ -8,11 +11,14 @@ public class MouseController : MonoBehaviour {
 
     public GameObject tileMarkerPrefab;
 
-    Tile tileDragStart;
+    Tile.TileType buildModeTile = Tile.TileType.Floor;
+
 
     Camera Cam;
 
     List<GameObject> dragPreviewGo;
+
+    private int dragSize = 15;
 
     Vector3 dragStartPosition;
     Vector3 lastFramePosition;
@@ -68,6 +74,9 @@ public class MouseController : MonoBehaviour {
 */
     void UpdateDraging()
     {
+        // if we are over an Ui-element bail out from this
+        
+
         // start drag
         if (Input.GetMouseButtonDown(0))
         {
@@ -81,7 +90,16 @@ public class MouseController : MonoBehaviour {
             int tmp = end_x;
             end_x = start_x;
             start_x = tmp;
+
+            if ((end_x - start_x) > dragSize - 1)
+                start_x = end_x - dragSize + 1;
         }
+        else
+        {
+            if ((end_x - start_x) > dragSize - 1)
+                end_x = start_x + dragSize - 1;
+        }
+
         int start_y = Mathf.FloorToInt(dragStartPosition.y);
         int end_y = Mathf.FloorToInt(currFramePosition.y);
         if (end_y < start_y)
@@ -89,7 +107,16 @@ public class MouseController : MonoBehaviour {
             int tmp = end_y;
             end_y = start_y;
             start_y = tmp;
+
+            if ((end_y - start_y) > dragSize - 1)
+                start_y = end_y - dragSize + 1;
         }
+        else
+        {
+            if ((end_y - start_y) > dragSize - 1)
+                end_y = start_y + dragSize - 1;
+        }
+
 
         //Clean up old drag previews
         for (int i = 0; i < dragPreviewGo.Count; i++)
@@ -97,6 +124,7 @@ public class MouseController : MonoBehaviour {
             SimplePool.Despawn(dragPreviewGo[i]);
         }
         dragPreviewGo.Clear();
+        
 
         if (Input.GetMouseButton(0))
         {
@@ -116,7 +144,9 @@ public class MouseController : MonoBehaviour {
 
             }
         }
-            //end drag
+        //end drag and place tiles
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
         if (Input.GetMouseButtonUp(0))
         { 
@@ -127,13 +157,23 @@ public class MouseController : MonoBehaviour {
                     Tile t = WorldController.Instance.world.GetTileAt(x, y);
                     if (t != null)
                     {
-                        t.Type = Tile.TileType.Floor;
+                        t.Type = buildModeTile;
                     }
                 }
 
             }
 
         }
+    }
+
+    public void SetMode_Floor()
+    {
+        buildModeTile = Tile.TileType.Floor;
+    }
+
+    public void SetMode_Bulldoze()
+    {
+        buildModeTile = Tile.TileType.Empty;
     }
 
 }
