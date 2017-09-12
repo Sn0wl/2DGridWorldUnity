@@ -7,11 +7,12 @@ using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour {
 
+    bool buildModeIsObjects = false;
     public GameObject myCamera;
 
     public GameObject tileMarkerPrefab;
 
-    Tile.TileType buildModeTile = Tile.TileType.Floor;
+    TileType buildModeTile = TileType.Floor;
 
 
     Camera Cam;
@@ -155,7 +156,11 @@ public class MouseController : MonoBehaviour {
                 for (int y = start_y; y <= end_y; y++)
                 {
                     Tile t = WorldController.Instance.world.GetTileAt(x, y);
-                    if (t != null)
+                    if (buildModeIsObjects && t != null)
+                    {
+                        // FixME: we´re assume walls
+                    }
+                    else
                     {
                         t.Type = buildModeTile;
                     }
@@ -168,12 +173,19 @@ public class MouseController : MonoBehaviour {
 
     public void SetMode_Floor()
     {
-        buildModeTile = Tile.TileType.Floor;
+        buildModeIsObjects = false;
+        buildModeTile = TileType.Floor;
     }
 
     public void SetMode_Bulldoze()
     {
-        buildModeTile = Tile.TileType.Empty;
+        buildModeIsObjects = false;
+        buildModeTile = TileType.Empty;
     }
 
+    public void SetMode_Wall()
+    {
+        buildModeIsObjects = true;
+        // wall
+    }
 }
