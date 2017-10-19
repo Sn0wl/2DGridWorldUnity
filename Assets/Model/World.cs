@@ -6,6 +6,8 @@ public class World {
 
     Tile[,] tiles;
 
+    Dictionary<string, InstalledObject> InstalledObjectPrototypes;
+
     int width;
 
     public int Width
@@ -43,8 +45,24 @@ public class World {
         }
 
         Debug.Log("World created with " + (width * height) + " tiles.");
+
+        
         
     }
+
+    void CreateinstalledOnjectPrototypes()
+    {
+        InstalledObjectPrototypes = new Dictionary<string, InstalledObject>();
+
+        InstalledObjectPrototypes.Add("Wall", InstalledObject.CreatePrototype(
+            "Wall",
+            0, // Impassable
+            1, //width
+            1 //Height
+            ));
+    }
+
+
 
     public Tile GetTileAt(int x, int y)
     {

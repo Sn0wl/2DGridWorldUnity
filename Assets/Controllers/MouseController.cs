@@ -7,10 +7,12 @@ using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour {
 
-    bool buildModeIsObjects = false;
     public GameObject myCamera;
 
     public GameObject tileMarkerPrefab;
+
+    bool buildModeIsObjects = false;
+    string buildModeObjectType;
 
     TileType buildModeTile = TileType.Floor;
 
@@ -159,9 +161,11 @@ public class MouseController : MonoBehaviour {
                     if (buildModeIsObjects && t != null)
                     {
                         // FixME: we´re assume walls
+                        //WorldController.Instance.world.PlaceInstalledObject(buildModeObjectType, t);
                     }
                     else
                     {
+                        // We are in Tile-changing mode.
                         t.Type = buildModeTile;
                     }
                 }
@@ -183,9 +187,11 @@ public class MouseController : MonoBehaviour {
         buildModeTile = TileType.Empty;
     }
 
-    public void SetMode_Wall()
+    public void SetMode_BuildInstalledObject(string objectType)
     {
         buildModeIsObjects = true;
-        // wall
+        buildModeObjectType = objectType;
+        // wall is not a Tile! Wall is an "InstalledObject"
     }
+
 }
